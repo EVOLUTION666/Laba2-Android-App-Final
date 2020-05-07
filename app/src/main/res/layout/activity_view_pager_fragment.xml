@@ -9,7 +9,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
+        android:scaleType="fitCenter"
         android:padding="20dp"
         android:id="@+id/view_pager_image_view"
         />

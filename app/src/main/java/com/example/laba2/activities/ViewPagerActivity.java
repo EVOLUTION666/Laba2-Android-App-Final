@@ -18,7 +18,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private List<Civilization> items;
-    private String name;
+    private int name;
 
 
     //Находими ViewPager по Id и настраиваем адаптер для ViewPager
@@ -29,7 +29,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.activity_item_view_pager);
 
-        name = this.getIntent().getStringExtra("name");
+        name = this.getIntent().getIntExtra("name", 0);
 
         items = Singleton.getInstance().getItems();
 
@@ -50,13 +50,8 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
         });
 
-        for(int i = 0; i < items.size(); i++)
-        {
-            if(items.get(i).getName().equals(name))
-            {
-                viewPager.setCurrentItem(i);
-                break;
-            }
-        }
+        viewPager.setCurrentItem(name);
+
+
     }
 }

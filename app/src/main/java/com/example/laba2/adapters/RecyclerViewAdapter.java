@@ -3,6 +3,7 @@ package com.example.laba2.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,14 @@ import com.example.laba2.activities.ViewPagerActivity;
 import com.example.laba2.model.Civilization;
 import com.example.laba2.R;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private String urlImage = "https://raw.githubusercontent.com/wesleywerner/ancient-tech/02decf875616dd9692b31658d92e64a20d99f816/src/images/tech/";
     private Context mContext;
-    private List<Civilization> mData;
+    private final List<Civilization> mData;
     RequestOptions option;
 
     public RecyclerViewAdapter(Context mContext, List<Civilization> mData) {
@@ -64,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mData.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private Civilization civItem;
         TextView tv_name;
@@ -79,8 +81,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             img_thumbnail = itemView.findViewById(R.id.thumbnail);
             itemView.setOnClickListener(this);
 
-
-
         }
 
         public void bindItem(Civilization item)
@@ -91,8 +91,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), ViewPagerActivity.class);
-            intent.putExtra("name", civItem.getName());
-            v.getContext().startActivity(intent);
+            Log.v("APP", "pos: " + getAdapterPosition());
+             intent.putExtra("name", getAdapterPosition());
+             v.getContext().startActivity(intent);
         }
     }
 
