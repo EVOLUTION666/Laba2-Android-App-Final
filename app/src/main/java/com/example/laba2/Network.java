@@ -1,7 +1,11 @@
 package com.example.laba2;
 
+import com.example.laba2.model.Civilization;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,7 +21,17 @@ public class Network {
 
     public static ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-    public boolean buildConnection(final String url) throws Exception {
+    public List<Civilization> getList(List<Civilization> list) throws Exception {
+        List<Civilization> passed = new ArrayList<>();
+        for (Civilization some : list ){
+            if(buildConnection(some.getGraphic())){
+                passed.add(some);
+            }
+        }
+        return passed;
+    }
+
+    private boolean buildConnection(final String url) throws Exception {
 
         final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.android.volley.RequestQueue;
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private final String JSON_URL = "https://raw.githubusercontent.com/wesleywerner/ancient-tech/02decf875616dd9692b31658d92e64a20d99f816/src/data/techs.ruleset.json";
     private final String IMAGE_URL = "https://raw.githubusercontent.com/wesleywerner/ancient-tech/02decf875616dd9692b31658d92e64a20d99f816/src/images/tech/";
@@ -41,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
         civilizations = new ArrayList<>();
         jsonrequest();
 
-       new Handler().postDelayed(() -> {
-           Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-           startActivity(intent);
-           finish();
-       }, 8000);
     }
 
 //    Парсим наш JSON файл и добавляем элементы в List
@@ -91,24 +87,20 @@ public class MainActivity extends AppCompatActivity {
     }
     //Добавляем Adapter для RecyclerView
     public void checkImage(List<Civilization> lstCivilization) {
-        List<Civilization> list = new ArrayList<>();
         Network network = new Network();
 
-        for (Civilization some : lstCivilization ){
             Network.executorService.submit(() ->{
                 try {
-                    if(network.buildConnection(some.getGraphic())){
-                        list.add(some);
-                        Singleton.getInstance().setItems(list);
-                    }
+                    Singleton.getInstance().setItems( network.getList(lstCivilization));
+
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
-        }
-
-
-
     }
 
 }
